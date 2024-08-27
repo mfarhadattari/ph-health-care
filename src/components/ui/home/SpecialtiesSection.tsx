@@ -42,7 +42,7 @@ const SpecialtiesSection = async () => {
   return (
     <Container
       sx={{
-        my: 30,
+        mt: 30,
       }}
     >
       <Box>
@@ -50,7 +50,7 @@ const SpecialtiesSection = async () => {
           <Typography variant="h4" component="h4" fontWeight={600}>
             Explore treatment across specialties
           </Typography>
-          <Typography component="p" fontSize={18}>
+          <Typography component="p" fontSize={18} mt={2}>
             Find experience doctor across all specialties
           </Typography>
         </Box>
