@@ -1,6 +1,8 @@
 "use client";
 
 import assets from "@/assets";
+import PHForm from "@/components/form/PHForm";
+import PHInput from "@/components/form/PHInput";
 import registerPatient from "@/services/actions/registerPatient";
 import modifyToFormData from "@/utils/modifyToFormData";
 import {
@@ -15,39 +17,18 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
-type TPatientData = {
-  name: string;
-  email: string;
-  contactNumber: number;
-  address: string;
-};
-
-type TRegisterInputs = {
-  password: string;
-  patient: TPatientData;
-};
-
 const RegisterPage = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<TRegisterInputs>();
-
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<TRegisterInputs> = async (values) => {
+  const onRegister: SubmitHandler<FieldValues> = async (values) => {
     const data = modifyToFormData(values);
     try {
       const result = await registerPatient(data);
       if (result.success) {
         toast.success(result.message);
-        reset();
         router.push("/login");
       } else {
         toast.error(result.message);
@@ -91,56 +72,44 @@ const RegisterPage = () => {
             </Box>
           </Stack>
           <Box>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <PHForm onSubmit={onRegister}>
               <Grid container spacing={2} my={1}>
                 <Grid item md={12}>
-                  <TextField
-                    label="Name"
-                    type="text"
-                    fullWidth={true}
-                    variant="outlined"
-                    placeholder="Name"
-                    {...register("patient.name")}
-                  />
+                  <PHInput label="Name" fullWidth={true} name="patient.name" />
                 </Grid>
                 <Grid item md={6}>
-                  <TextField
+                  <PHInput
                     label="Email"
+                    name="patient.email"
                     type="email"
                     fullWidth={true}
-                    variant="outlined"
-                    placeholder="Email"
-                    {...register("patient.email")}
+                    required={true}
                   />
                 </Grid>
                 <Grid item md={6}>
-                  <TextField
+                  <PHInput
                     label="Password"
+                    name="password"
                     type="password"
                     fullWidth={true}
-                    variant="outlined"
-                    placeholder="Password"
-                    {...register("password")}
+                    required={true}
                   />
                 </Grid>
                 <Grid item md={6}>
-                  <TextField
+                  <PHInput
                     label="Contact Number"
+                    name="patient.contactNumber"
                     type="tel"
                     fullWidth={true}
-                    variant="outlined"
-                    placeholder="Contact Number"
-                    {...register("patient.contactNumber")}
+                    required={true}
                   />
                 </Grid>
                 <Grid item md={6}>
-                  <TextField
+                  <PHInput
                     label="Address"
-                    type="text"
+                    name="patient.address"
                     fullWidth={true}
-                    variant="outlined"
-                    placeholder="Address"
-                    {...register("patient.address")}
+                    required={true}
                   />
                 </Grid>
               </Grid>
@@ -156,7 +125,7 @@ const RegisterPage = () => {
               <Typography component="p" fontWeight={300}>
                 Do you already have an account? <Link href="/login">Login</Link>
               </Typography>
-            </form>
+            </PHForm>
           </Box>
         </Box>
       </Stack>

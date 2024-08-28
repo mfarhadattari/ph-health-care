@@ -1,9 +1,11 @@
-const Loading = () => {
+import Loading from "@/components/ui/loading/Loading/Loading";
+
+const LoadingPage = () => {
   return (
-    <div>
-      <h1>Loading...</h1>
+    <div className="min-h-screen flex justify-center items-center">
+      <Loading />
     </div>
   );
 };
 
-export default Loading;
+export default LoadingPage;
