@@ -1,6 +1,7 @@
 import HeroSection from "@/components/ui/home/HeroSection";
 import HowItSection from "@/components/ui/home/HowItSection";
 import SpecialtiesSection from "@/components/ui/home/SpecialtiesSection";
+import StatsSection from "@/components/ui/home/StatsSection";
 import TopRatedDoctor from "@/components/ui/home/TopRatedDoctor";
 import WhyUsSection from "@/components/ui/home/WhyUsSection";
 
@@ -12,6 +13,7 @@ export default function Home() {
       <TopRatedDoctor />
       <WhyUsSection />
       <HowItSection />
+      <StatsSection />
     </>
   );
 }
