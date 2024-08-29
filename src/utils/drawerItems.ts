@@ -90,7 +90,7 @@ const drawerItems = (role: TUserRole): TDrawerItem[] => {
         },
         {
           title: "Appointments",
-          path: `${USER_ROLE_PATH.DOCTOR}/appointment`,
+          path: `${USER_ROLE_PATH.DOCTOR}/appointments`,
           icon: BookOnlineIcon,
         }
       );

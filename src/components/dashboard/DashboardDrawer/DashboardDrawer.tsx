@@ -1,23 +1,23 @@
 "use client";
 
+import { getUserInfo } from "@/services/auth.service";
 import MenuIcon from "@mui/icons-material/Menu";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 
 const drawerWidth = 240;
 
-const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
+const DashboardDrawer = ({ children }: { children: ReactNode }) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
 
   const handleDrawerClose = () => {
     setIsClosing(true);
