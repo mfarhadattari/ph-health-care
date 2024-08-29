@@ -1,25 +1,11 @@
 import { authKey } from "@/const/authKey";
+import { TAuthPayload } from "@/types";
 import { decodedToken } from "@/utils/jwt";
 import {
   getFromLocalStorage,
   removeFromLocalStorage,
   setToLocalStorage,
 } from "@/utils/localStorage";
-
-enum UserRole {
-  "SUPER_ADMIN",
-  "ADMIN",
-  "DOCTOR",
-  "PATIENT",
-}
-
-export type TAuthPayload = {
-  userId: string;
-  email: string;
-  role: UserRole;
-  iat: number;
-  exp: number;
-};
 
 export const storeUserInfo = (accessToken: string) => {
   return setToLocalStorage(authKey, accessToken);
