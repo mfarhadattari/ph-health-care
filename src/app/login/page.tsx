@@ -4,26 +4,43 @@ import PHForm from "@/components/form/PHForm";
 import PHInput from "@/components/form/PHInput";
 import { storeUserInfo } from "@/services/auth.service";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import loginUser from "../../services/actions/loginUser";
 
-export const LoginValidationSchema = z.object({
-  email: z.string().email({ message: "Invalid email address." }),
+const LoginValidationSchema = z.object({
+  email: z.string().email({ message: "Please provide valid email." }),
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters." }),
 });
 
+const loginDefaultValues = {
+  email: "",
+  password: "",
+};
+
 const LoginPage = () => {
   const router = useRouter();
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const onLogin: SubmitHandler<FieldValues> = async (values) => {
+    setErrorMessage("");
     try {
       const result = await loginUser(values);
       if (result.success && result.data.accessToken) {
@@ -31,10 +48,10 @@ const LoginPage = () => {
         storeUserInfo(result.data.accessToken);
         router.push("/");
       } else {
-        toast.error(result.message);
+        setErrorMessage(result.message);
       }
     } catch (error: any) {
-      toast.error(error.message);
+      setErrorMessage(error.message);
     }
   };
 
@@ -72,14 +89,14 @@ const LoginPage = () => {
               </Typography>
             </Box>
           </Stack>
+          <Box mt={2}>
+            {errorMessage && <Alert severity="error">{errorMessage}.</Alert>}
+          </Box>
           <Box>
             <PHForm
               onSubmit={onLogin}
               resolver={zodResolver(LoginValidationSchema)}
-              defaultValues={{
-                email: "",
-                password: "",
-              }}
+              defaultValues={loginDefaultValues}
             >
               <Grid container spacing={2} my={1}>
                 <Grid item md={6}>

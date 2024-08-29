@@ -6,30 +6,49 @@ import PHInput from "@/components/form/PHInput";
 import registerPatient from "@/services/actions/registerPatient";
 import modifyToFormData from "@/utils/modifyToFormData";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-export const RegisterValidationSchema = z.object({
+const RegisterValidationSchema = z.object({
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters." }),
   patient: z.object({
-    name: z.string().min(1, { message: "Name must be provide." }),
-    email: z.string().email({ message: "Invalid email address." }),
-    contactNumber: z
-      .string()
-      .min(1, { message: "Contract number must be provide." }),
-    address: z.string().min(1, { message: "Address must be provide." }),
+    name: z.string().min(1, { message: "Please provide your name" }),
+    email: z.string().email({ message: "Please provide valid email." }),
+    contactNumber: z.string().regex(/^\d{11}$/, "Please provide valid number"),
+    address: z.string().min(1, { message: "Please provide your address." }),
   }),
 });
 
+const registerDefaultValues = {
+  password: "",
+  patient: {
+    name: "",
+    email: "",
+    contactNumber: "",
+    address: "",
+  },
+};
+
 const RegisterPage = () => {
   const router = useRouter();
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onRegister: SubmitHandler<FieldValues> = async (values) => {
     const data = modifyToFormData(values);
@@ -39,10 +58,10 @@ const RegisterPage = () => {
         toast.success(result.message);
         router.push("/login");
       } else {
-        toast.error(result.message);
+        setErrorMessage(result.message);
       }
     } catch (error: any) {
-      toast.error(error.message);
+      setErrorMessage(error.message);
     }
   };
   return (
@@ -79,19 +98,14 @@ const RegisterPage = () => {
               </Typography>
             </Box>
           </Stack>
+          <Box mt={2}>
+            {errorMessage && <Alert severity="error">{errorMessage}.</Alert>}
+          </Box>
           <Box>
             <PHForm
               onSubmit={onRegister}
               resolver={zodResolver(RegisterValidationSchema)}
-              defaultValues={{
-                password: "",
-                patient: {
-                  name: "",
-                  email: "",
-                  contactNumber: "",
-                  address: "",
-                },
-              }}
+              defaultValues={registerDefaultValues}
             >
               <Grid container spacing={2} my={1}>
                 <Grid item md={12}>
