@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import { styled, SxProps } from "@mui/material/styles";
 import * as React from "react";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+export const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
@@ -39,10 +39,11 @@ const PHModel = ({
     <React.Fragment>
       <BootstrapDialog
         onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
+        aria-labelledby="ph-model-title"
         open={open}
+        sx={{ ...sx }}
       >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+        <DialogTitle sx={{ m: 0, p: 2 }} id="ph-model-title">
           {title}
         </DialogTitle>
         <IconButton
