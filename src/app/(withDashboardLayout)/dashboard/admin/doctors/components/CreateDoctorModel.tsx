@@ -5,9 +5,12 @@ import PHInput from "@/components/form/PHInput";
 import PHSelect from "@/components/form/PHSelect";
 import PHFullModel from "@/components/shared/PHModel/PHFullModel";
 import { GENDER } from "@/const/user";
+import { useCreateDoctorMutation } from "@/redux/api/doctorApi";
+import modifyToFormData from "@/utils/modifyToFormData";
 import { Box, Button, Grid } from "@mui/material";
 import * as React from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 type TProps = {
   open: boolean;
@@ -33,8 +36,21 @@ const doctorDefaultValue = {
 };
 
 const CreateDoctorModel = ({ open, setOpen }: TProps) => {
-  const handelCreateDoctor = (values: FieldValues) => {
-    console.log(values);
+  const [createDoctor] = useCreateDoctorMutation();
+  const handelCreateDoctor = async (values: FieldValues) => {
+    values.doctor.appointmentFee = Number(values.doctor.appointmentFee);
+    values.doctor.experience = Number(values.doctor.experience);
+    const data = modifyToFormData(values);
+    try {
+      const res = await createDoctor(data).unwrap();
+      if (res.id) {
+        toast.success("Doctor created successfully.");
+      } else {
+        toast.success("Something went wrong.");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
