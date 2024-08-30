@@ -1,7 +1,7 @@
 "use client";
 
 import { getUserInfo, removeUser } from "@/services/auth.service";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -17,9 +17,14 @@ const AuthButton = () => {
   return (
     <>
       {user && user.userId ? (
-        <Button variant="outlined" color="error" onClick={handelLogout}>
-          Logout
-        </Button>
+        <Stack direction="row" gap={1}>
+          <Button component={Link} href="/dashboard">
+            Dashboard
+          </Button>
+          <Button variant="outlined" color="error" onClick={handelLogout}>
+            Logout
+          </Button>
+        </Stack>
       ) : (
         <Button component={Link} href="/login">
           Login

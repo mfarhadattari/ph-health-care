@@ -27,16 +27,16 @@ axiosInstance.interceptors.response.use(
   //@ts-ignore
   function (response) {
     const responseData: TResponseSuccess = {
-      data: response?.data?.data,
+      data: response?.data?.data || null,
       meta: response?.data?.meta,
     };
     return responseData;
   },
   function (error) {
     const errorData: TResponseError = {
-      statusCode: error?.response?.data?.statusCode,
-      message: error?.response?.data?.message,
-      errorMessage: error?.response?.data?.message,
+      statusCode: error?.response?.data?.statusCode || 500,
+      message: error?.response?.data?.message || "Something went wrong.",
+      errorMessage: error?.response?.data?.message || null,
     };
     return errorData;
   }

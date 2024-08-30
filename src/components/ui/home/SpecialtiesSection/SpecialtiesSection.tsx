@@ -62,7 +62,7 @@ const SpecialtiesSection = async () => {
           flexDirection="row"
           justifyContent="space-between"
         >
-          {specialties?.map((specialty) => (
+          {specialties?.slice(0, 6)?.map((specialty) => (
             <SpecialtiesItem
               key={specialty.id}
               title={specialty.title}
