@@ -4,6 +4,8 @@ export type TMeta = {
   total: number;
 };
 
+export type TGender = "MALE" | "FEMALE";
+
 export type TResponseSuccess = {
   data: any;
   meta?: TMeta;
