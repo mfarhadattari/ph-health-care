@@ -19,7 +19,7 @@ const PHFileUpload = ({ name, label, fullWidth, sx }: TPHFileUpload) => {
         <Button
           component="label"
           role={undefined}
-          variant="contained"
+          variant="outlined"
           tabIndex={-1}
           startIcon={<CloudUploadIcon />}
           fullWidth={fullWidth}

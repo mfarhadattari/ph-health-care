@@ -1,5 +1,6 @@
 "use client";
 
+import PHFileUpload from "@/components/form/PHFileUpload";
 import PHForm from "@/components/form/PHForm";
 import PHInput from "@/components/form/PHInput";
 import PHSelect from "@/components/form/PHSelect";
@@ -43,6 +44,7 @@ const CreateDoctorModel = ({ open, setOpen }: TProps) => {
     const data = modifyToFormData(values);
     try {
       const res = await createDoctor(data).unwrap();
+      console.log(res);
       if (res.id) {
         toast.success("Doctor created successfully.");
       } else {
@@ -156,6 +158,14 @@ const CreateDoctorModel = ({ open, setOpen }: TProps) => {
             <PHInput
               name="doctor.designation"
               label="Designation"
+              fullWidth={true}
+              sx={{ mb: 2 }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={4} lg={3}>
+            <PHFileUpload
+              name="file"
+              label="Profile Photo"
               fullWidth={true}
               sx={{ mb: 2 }}
             />

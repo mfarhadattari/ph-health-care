@@ -5,6 +5,7 @@ import {
   useDeleteDoctorMutation,
   useGetDoctorsQuery,
 } from "@/redux/api/doctorApi";
+import { useDebounced } from "@/redux/hooks";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -14,7 +15,16 @@ import CreateDoctorModel from "./components/CreateDoctorModel";
 
 const DoctorsPage = () => {
   const [modelOpen, setModelOpen] = React.useState<boolean>(false);
-  const { data, isLoading } = useGetDoctorsQuery({});
+
+  const query: Record<string, string> = {};
+  const [searchTerm, setSearchTerm] = React.useState<string>("");
+
+  const searchDebounce = useDebounced({ searchQuery: searchTerm, delay: 1000 });
+  if (!!searchDebounce) {
+    query["searchTerm"] = searchTerm;
+  }
+
+  const { data, isLoading } = useGetDoctorsQuery({ ...query });
   const [deleteDoctor] = useDeleteDoctorMutation();
 
   const handleDelete = async (id: string) => {
@@ -59,7 +69,11 @@ const DoctorsPage = () => {
         <Button onClick={() => setModelOpen(true)}>Create Doctor</Button>
         <CreateDoctorModel open={modelOpen} setOpen={setModelOpen} />
 
-        <TextField size="small" placeholder="Search doctor" />
+        <TextField
+          onChange={(e) => setSearchTerm(e.target.value)}
+          size="small"
+          placeholder="Search doctor"
+        />
       </Stack>
       <Box>
         {isLoading ? (
