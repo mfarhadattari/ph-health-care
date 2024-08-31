@@ -39,4 +39,4 @@ const scheduleApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {} = scheduleApi;
+export const { useCreateScheduleMutation, useGetSchedulesQuery, useDeleteScheduleMutation } = scheduleApi;
