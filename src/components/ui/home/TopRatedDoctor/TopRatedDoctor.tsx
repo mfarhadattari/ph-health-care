@@ -1,3 +1,5 @@
+import defaultDoctorImg from "@/assets/doctor-image1.png";
+import { TDoctor } from "@/types";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import {
   Box,
@@ -10,27 +12,6 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-
-type TDoctor = {
-  id: string;
-  email: string;
-  name: string;
-  profilePhoto: string;
-  contactNumber: string;
-  address: string;
-  registrationNumber: string;
-  experience: string;
-  gender: string;
-  appointmentFee: string;
-  qualification: string;
-  currentWorkingPlace: string;
-  designation: string;
-  averageRating: number;
-  isDeleted: boolean;
-  createdAt: string;
-  updatedAt: string;
-  doctorSpecialty?: [];
-};
 
 const TopRatedDoctor = async () => {
   const res = await fetch(
@@ -87,10 +68,14 @@ const TopRatedDoctor = async () => {
               <Card>
                 <Box>
                   <Image
-                    src={doctor.profilePhoto}
+                    src={doctor.profilePhoto || defaultDoctorImg}
                     alt={doctor.name}
                     width={500}
                     height={500}
+                    style={{
+                      height: "300px",
+                      width: "100%",
+                    }}
                   />
                 </Box>
                 <CardContent>
