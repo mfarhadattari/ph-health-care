@@ -1,4 +1,4 @@
-import { TMeta, TSchedule } from "@/types";
+import { TMeta, TResSchedule } from "@/types";
 import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
@@ -20,9 +20,9 @@ const scheduleApi = baseApi.injectEndpoints({
         method: "GET",
         params: { ...query },
       }),
-      transformResponse: (response: TSchedule[], meta: TMeta) => {
+      transformResponse: (response: TResSchedule[], meta: TMeta) => {
         return {
-          doctors: response,
+          schedules: response,
           meta,
         };
       },

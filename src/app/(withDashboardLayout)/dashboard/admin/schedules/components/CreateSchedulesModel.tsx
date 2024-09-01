@@ -2,11 +2,13 @@ import PHDatePicker from "@/components/form/PHDatePicker";
 import PHForm from "@/components/form/PHForm";
 import PHTimePicker from "@/components/form/PHTimePicker";
 import PHModel from "@/components/shared/PHModel/PHModel";
+import { useCreateScheduleMutation } from "@/redux/api/scheduleApi";
 import { TSchedule } from "@/types";
 import { formatDate, formatTime } from "@/utils/datetime";
 import { Button, Grid } from "@mui/material";
 import * as React from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 type TProps = {
   open: boolean;
@@ -21,12 +23,25 @@ const scheduleDefaultValue: TSchedule = {
 };
 
 const CreateSchedulesModel = ({ open, setOpen }: TProps) => {
+  const [createSchedule] = useCreateScheduleMutation();
+
   const handelCreateSchedules = async (values: FieldValues) => {
     values.startDate = formatDate(values.startDate);
     values.endDate = formatDate(values.endDate);
     values.startTime = formatTime(values.startTime);
     values.endTime = formatTime(values.endTime);
-    console.log(values);
+    try {
+      const res = await createSchedule(values);
+      if (res?.data?.length) {
+        toast.success("Schedules created successfully");
+        setOpen(false);
+      } else {
+        toast.error("Something went wrong");
+        console.log(res);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
