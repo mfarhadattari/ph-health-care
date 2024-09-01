@@ -36,7 +36,6 @@ const DashboardDrawer = ({ children }: { children: ReactNode }) => {
   };
 
   const { data: profileData = {}, isLoading } = useGetMyProfileQuery({});
-  console.log(profileData);
 
   return (
     <Box sx={{ display: "flex" }}>
