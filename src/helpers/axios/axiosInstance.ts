@@ -1,4 +1,5 @@
 import { authKey } from "@/const/authKey";
+import { getNewAccessToken, storeUserInfo } from "@/services/auth.service";
 import { TResponseError, TResponseSuccess } from "@/types";
 import { getFromLocalStorage } from "@/utils/localStorage";
 import axios from "axios";
@@ -32,13 +33,22 @@ axiosInstance.interceptors.response.use(
     };
     return responseData;
   },
-  function (error) {
-    const errorData: TResponseError = {
-      statusCode: error?.response?.data?.statusCode || 500,
-      message: error?.response?.data?.message || "Something went wrong.",
-      errorMessage: error?.response?.data?.message || null,
-    };
-    return errorData;
+  async function (error) {
+    const config = error.config;
+    if (error?.response?.status === 401) {
+      const response = await getNewAccessToken();
+      const accessToken = response?.data?.accessToken;
+      config.headers['Authorization'] = accessToken;
+      storeUserInfo(accessToken);
+      return axiosInstance(config);
+    } else {
+      const errorData: TResponseError = {
+        statusCode: error?.response?.data?.statusCode || 500,
+        message: error?.response?.data?.message || "Something went wrong.",
+        errorMessage: error?.response?.data?.message || null,
+      };
+      return errorData;
+    }
   }
 );
 
