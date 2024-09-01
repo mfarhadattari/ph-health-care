@@ -1,7 +1,9 @@
 "use client";
 
-import { getUserInfo } from "@/services/auth.service";
+import { useGetMyProfileQuery } from "@/redux/api/userApi";
 import MenuIcon from "@mui/icons-material/Menu";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { Avatar, Badge, Stack } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,7 +11,7 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 
 const drawerWidth = 240;
@@ -17,7 +19,6 @@ const drawerWidth = 240;
 const DashboardDrawer = ({ children }: { children: ReactNode }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -33,6 +34,9 @@ const DashboardDrawer = ({ children }: { children: ReactNode }) => {
       setMobileOpen(!mobileOpen);
     }
   };
+
+  const { data: profileData = {}, isLoading } = useGetMyProfileQuery({});
+  console.log(profileData);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -57,18 +61,41 @@ const DashboardDrawer = ({ children }: { children: ReactNode }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Box>
-            <Typography variant="body1" noWrap component="div" color="gray">
-              Hi, Mohammad Farhad
-            </Typography>
-            <Typography
-              variant="body2"
-              noWrap
-              component="div"
-              color="primary.main"
-            >
-              Welcome to PH Health Care
-            </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Box>
+              <Typography
+                variant="body1"
+                noWrap
+                component="div"
+                color="gray"
+                display="flex"
+              >
+                Hi, {isLoading ? "Loading..." : profileData?.name}
+              </Typography>
+              <Typography
+                variant="body2"
+                noWrap
+                component="div"
+                color="primary.main"
+              >
+                Welcome to PH Health Care
+              </Typography>
+            </Box>
+            <Stack direction="row" gap={3}>
+              <Badge badgeContent={1} color="primary">
+                <IconButton sx={{ background: "#ffffff" }}>
+                  <NotificationsNoneIcon color="action" />
+                </IconButton>
+              </Badge>
+              <Avatar alt={profileData?.name} src={profileData?.profilePhoto} />
+            </Stack>
           </Box>
         </Toolbar>
       </AppBar>
