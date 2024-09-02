@@ -7,8 +7,10 @@ import {
 } from "@/redux/api/doctorApi";
 import { useDebounced } from "@/redux/hooks";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import Link from "next/link";
 import * as React from "react";
 import { toast } from "sonner";
 import CreateDoctorModel from "./components/CreateDoctorModel";
@@ -50,13 +52,23 @@ const DoctorsPage = () => {
       align: "center",
       renderCell: ({ row }) => {
         return (
-          <IconButton
-            color="error"
-            onClick={() => handleDelete(row.id)}
-            aria-label="delete"
-          >
-            <DeleteIcon />
-          </IconButton>
+          <Stack direction="row" justifyContent="center" gap={2}>
+            <IconButton
+              color="error"
+              onClick={() => handleDelete(row.id)}
+              aria-label="delete"
+            >
+              <DeleteIcon />
+            </IconButton>
+            <IconButton
+              color="info"
+              aria-label="edit"
+              component={Link}
+              href={`/dashboard/admin/doctors/edit/${row.id}`}
+            >
+              <EditIcon />
+            </IconButton>
+          </Stack>
         );
       },
     },
