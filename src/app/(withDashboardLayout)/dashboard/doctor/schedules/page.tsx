@@ -1,7 +1,10 @@
 "use client";
 
 import Loaders from "@/components/shared/Loader/Loader";
-import { useGetDoctorSchedulesQuery } from "@/redux/api/doctorApi";
+import {
+  useDeleteDoctorScheduleMutation,
+  useGetDoctorSchedulesQuery,
+} from "@/redux/api/doctorApi";
 import { TSchedule } from "@/types";
 import { getDateTime } from "@/utils/datetime";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -33,8 +36,10 @@ const DoctorSchedulesPage = () => {
   }, [data, isLoading]);
 
   /* ------------------ Delete Schedule --------------- */
+  const [deleteDoctorSchedule] = useDeleteDoctorScheduleMutation();
   const handleDelete = async (id: string) => {
     try {
+      await deleteDoctorSchedule(id);
       toast.success("Doctor deleted successfully.");
     } catch (err) {
       toast.error("Something went wrong.");
